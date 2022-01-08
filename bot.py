@@ -237,4 +237,4 @@ async def on_raw_reaction_add(payload):
         count+=1
 
 client.add_cog(music)
-client.run('ODkwMzMwNjQ3NjE1NDAxOTk3.YUuPBw.raPHv6U0MqUJIQ-zan8Sgp1Qh1w')
+client.run('')
