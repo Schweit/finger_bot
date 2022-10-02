@@ -5,8 +5,6 @@ import time
 from datetime import datetime
 from collections import deque
 
-# ODkwMzMwNjQ3NjE1NDAxOTk3.GjTfed.JFapgexYkT3tFDp02Pl13Q6HwxGHbOUfRhjtvI
-
 class PlaylistEngine:
 
     fileName = "playlist_1_7_2022.pickle"
