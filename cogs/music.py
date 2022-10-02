@@ -1,26 +1,9 @@
 import asyncio
 import discord
-import os
 import youtube_dl
-import json
 import playlist
 from discord.ext import commands
 
-helpText = """Here are my commands you piece of shit..
-
-**.join** - Joins Voice Chat
-**.leave** - Leaves Voice Chat
-**.mike** - Plays a Mike Dean song that will take you to ANOTHER! PLANET!!!!
-**.stream [YouTube Url]** - Plays YouTube Audio
-
-If I need to explain these next commands, you should just leave the server... 
-**.play**
-**.pause**
-**.stop**
-**.rickroll**
-
-OHHHhh.. and Fuck Luke...
-"""
 
 youtube_dl.utils.bug_reports_message = lambda: '' 
 
@@ -66,12 +49,47 @@ class YTDLSource(discord.PCMVolumeTransformer):
         filename = data['url'] if stream else ytdl.prepare_filename(data)
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
+
 class Music(commands.Cog):
+    helpText = """Here are my commands you piece of shit..
+
+**.join** - Joins Voice Chat
+**.leave** - Leaves Voice Chat
+**.mike** - Plays a Mike Dean song that will take you to ANOTHER! PLANET!!!!
+**.stream [YouTube Url]** - Plays YouTube Audio
+
+If I need to explain these next commands, you should just leave the server... 
+**.play**
+**.pause**
+**.stop**
+**.rickroll**
+
+OHHHhh.. and Fuck Luke...
+"""
+
     voiceClient = None
-    users = open("users.json", "r+") 
+    # users = open("users.json", "r+") 
     
     def __init__(self, bot):
         self.bot = bot
+
+    # @commands.Cog.listener()
+    # async def on_ready(self):
+    #     print("Music Bot Redady")
+
+    # @commands.Cog.listener()
+    # async def on_voice_state_update(self, member, before, after):
+    #     if before.channel == None:
+    #         channels = await after.channel.guild.fetch_channels()
+    #         for channel in channels:
+    #             if str(channel.category) == "Text Channels":
+    #                 print("idk..")
+    #     if str(member) == "TopFord#7988":
+    #         if before.channel == None:
+    #             await asyncio.sleep(2)
+    #             voice_state = member.guild.voice_client
+    #             player = await YTDLSource.from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley", loop=self.bot.loop, stream=True)
+    #             voice_state.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
 
     @commands.command()
     async def join(self, ctx):
@@ -93,7 +111,7 @@ class Music(commands.Cog):
     @commands.command()
     async def mike(self, ctx):
         async with ctx.typing():
-            player = await YTDLSource.from_url("https://youtu.be/g0YRgWo6zdc?t=6", loop=self.bot.loop, stream=True)
+            player = await YTDLSource.from_url("https://www.youtube.com/watch?v=-TZz98NgG1A", loop=self.bot.loop, stream=True)
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
 
     @commands.command()
@@ -161,22 +179,8 @@ class Music(commands.Cog):
         print(ctx.author)
 
     @commands.command()
-    async def help(self, ctx):
-        await ctx.send(helpText)
-
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
-        if before.channel == None:
-            channels = await after.channel.guild.fetch_channels()
-            for channel in channels:
-                if str(channel.category) == "Text Channels":
-                    print("idk..")
-        if str(member) == "TopFord#7988":
-            if before.channel == None:
-                await asyncio.sleep(2)
-                voice_state = member.guild.voice_client
-                player = await YTDLSource.from_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley", loop=self.bot.loop, stream=True)
-                voice_state.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+    async def fuck(self, ctx):
+        await ctx.send(self.helpText)
 
     def _checkPermissions(self, user, cmd):
         if (cmd == "rick"):
@@ -204,37 +208,5 @@ class Music(commands.Cog):
         except: 
             return ["Cant Find Song", False]
 
-
-
-client = commands.Bot(command_prefix = '.', help_command=None)
-count = 0
-emoji = None
-music = Music(client)
-
-@client.event
-async def on_ready():
-    print("bot is ready")
-
-@client.event
-async def on_message(msg):
-    global emoji
-    global count
-    if msg.author.bot or count == 0: return
-    print(msg)
-    await msg.add_reaction(emoji)
-    if "Jake" in msg.content:
-        channel = client.get_channel(msg.channel.id)
-        await channel.send('Fuck Jake...')
-    await client.process_commands(msg)
-
-@client.event
-async def on_raw_reaction_add(payload):
-    global emoji
-    global count
-    if count == 0:
-        print("Emoji Set!")
-        emoji = payload.emoji
-        count+=1
-
-client.add_cog(music)
-client.run('')
+async def setup(bot):
+    await bot.add_cog(Music(bot))

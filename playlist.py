@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from collections import deque
 
+# ODkwMzMwNjQ3NjE1NDAxOTk3.GjTfed.JFapgexYkT3tFDp02Pl13Q6HwxGHbOUfRhjtvI
 
 class PlaylistEngine:
 
@@ -26,8 +27,8 @@ class PlaylistEngine:
 
     def playlist(self, user, playlistName, song, delete):
         user = self._checkUser(user)
-        if not song and delete:
-            self._deletePlaylist(user, playlistName)
+        # if not song and delete:
+        #     self._deletePlaylist(user, playlistName)
 
         # creates a playlist if one doesnt exist
         playlist = self._checkPlaylist(user, playlistName)
@@ -98,10 +99,10 @@ class PlaylistEngine:
     def _deleteSong(playlist, song):
         del playlist['songs'][song]
 
-    def _deletePlaylist(user, playlistName):
-        for p in user['playlists']:
-            if p['name'] == playlistName:
-                del user['playlists'].remove(p)
+    # def _deletePlaylist(user, playlistName):
+        # for p in user['playlists']:
+        #     if p['name'] == playlistName:
+        #         del user['playlists'].remove(p)
 
     # def _showUsers():
 
